@@ -48,7 +48,7 @@ veracode_sca_scan:
     # Entering both will only execute branches_to_run
     # Leaving them both blank means this will never run
     branches_to_run:
-      - '*'
+      - 'js-dyn*'
     branches_to_exclude:
       - 'js-dyn*'
   pull_request:
