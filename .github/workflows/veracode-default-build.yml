@@ -207,7 +207,7 @@ jobs:
               & $cliFile.FullName
 
               $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
-              echo "VERACODE_CLI=veracode" | Out-File -FilePath $env:GITHUB_ENV -Append
+              echo "VERACODE_CLI=$VERACODE_CLI" | Out-File -FilePath $env:GITHUB_ENV -Append
               Write-Host "CLI installed globally, using 'veracode' command"
             } else {
               Write-Error "No Veracode CLI files found (neither ZIP nor PS1). Please ensure the update-cli workflow has run successfully."
