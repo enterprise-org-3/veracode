@@ -206,7 +206,7 @@ jobs:
               $ProgressPreference = "silentlyContinue"
               & $cliFile.FullName
 
-              # PS1 script installs CLI globally, so use 'veracode' command directly
+              $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
               echo "VERACODE_CLI=veracode" | Out-File -FilePath $env:GITHUB_ENV -Append
               Write-Host "CLI installed globally, using 'veracode' command"
             } else {
