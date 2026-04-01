@@ -27,10 +27,13 @@ jobs:
             rm -rf LATEST_VERSION
           else
             echo "There is a new version we need to downlaod"
-            downloadUrl="https://tools.veracode.com/veracode-cli/veracode-cli_${latest_version}_linux_x86.tar.gz"
-            echo "Download URL: $downloadUrl"
-            curl -sSO $downloadUrl
-            curl -sS -o veracode-cli_${latest_version}_windows.ps1 https://tools.veracode.com/veracode-cli/install.ps1
+            # Download the new version (both Linux and Windows binaries)
+            linuxUrl="https://tools.veracode.com/veracode-cli/veracode-cli_${latest_version}_linux_x86.tar.gz"
+            windowsUrl="https://tools.veracode.com/veracode-cli/veracode-cli_${latest_version}_windows_x86.zip"
+            echo "Downloading Linux CLI: $linuxUrl"
+            curl -sSO $linuxUrl
+            echo "Downloading Windows CLI: $windowsUrl"
+            curl -sSO $windowsUrl
             ls -la
             echo "CLEAN UP"
             rm -rf veracode-cli_${local_version}_linux_x86.tar.gz
