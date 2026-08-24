@@ -30,12 +30,26 @@ jobs:
       run_id: ${{ github.run_id }}
       branch: ${{ github.event.client_payload.repository.branch }}
       default_runs_on: ${{ github.event.client_payload.user_config.default_runs_on }}
+      
+  identify-os:
+    needs: register
+    runs-on: ${{ fromJSON(github.event.client_payload.user_config.default_runs_on) }}
+    name: Identify the runner OS
+    outputs:
+      runner_os: ${{ steps.identify_runner_os.outputs.runner_os }}
+    steps:
+      - name: Identify the runner OS
+        id: identify_runner_os
+        shell: bash
+        run: echo "runner_os=${{ runner.os }}" >> $GITHUB_OUTPUT
 
   veracode-sca-scan:
-    needs: [register]
+    needs: identify-os
     runs-on: ${{ fromJSON(github.event.client_payload.user_config.default_runs_on) }}
     name: Veracode Component Analysis
     timeout-minutes: 30
+    container:
+      image: ${{ contains(needs.identify-os.outputs.runner_os, 'Linux') && github.event.client_payload.user_config.build_packager_image || '' }}
 
     steps:
       - uses: actions/checkout@v6
@@ -46,6 +60,28 @@ jobs:
       - uses: actions/checkout@v6
         with:
           path: 'veracode-helper'
+
+      - name: Run Pre-Build Dependency - Linux
+        if: contains(runner.os, 'Linux')
+        shell: bash
+        run: |
+          if [[ -n "${{ github.event.client_payload.user_config.build_predependency_command }}" ]]; then
+            echo "Executing Pre-Build Dependency.."
+            ${{ github.event.client_payload.user_config.build_predependency_command }}
+          else
+            echo "No Pre-Build Dependency provided."
+          fi
+          
+      - name: Run Pre-Build Dependency - Windows
+        if: contains(runner.os, 'Windows')
+        shell: pwsh
+        run: |
+          if (-not [string]::IsNullOrEmpty("${{ github.event.client_payload.user_config.build_predependency_command }}")) {
+            Write-Host "Executing Pre-Build Dependency.."
+            Invoke-Expression "${{ github.event.client_payload.user_config.build_predependency_command }}"
+          } else {
+            Write-Host "No Pre-Build Dependency provided."
+          }
 
       - name: Find yarn JS apps using workspaces - Linux
         if: contains(runner.os, 'Linux')
@@ -168,4 +204,3 @@ jobs:
           sca_fix_enabled: ${{ github.event.client_payload.user_config.sca_fix_enabled }}
           profile_name: ${{ github.event.client_payload.user_config.profile_name }}
           pr_number: ${{ github.event.client_payload.pr_number }}
-
