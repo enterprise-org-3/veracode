@@ -117,6 +117,7 @@ jobs:
           vkey: ${{ secrets.VERACODE_API_KEY }}
           veracode_policy_name: ${{ inputs.policy_name }}
           file: ./veracode_artifact_directory/${{ matrix.file }}
+          fail_build_error: ${{ inputs.break_build_on_error }}
           fail_build: ${{ inputs.break_build_policy_findings }}
           summary_output: true
           summary_output_file: ${{ strategy.job-index }}-results.txt
@@ -130,7 +131,7 @@ jobs:
       - name: Veracode Pipeline Results
         if: always()
         id: prepare-results
-        uses: veracode/github-actions-integration-helper@v0.1.11
+        uses: ship099/Veracode-pipeline-scan-action@ENG-Fix
         with:
           action: 'preparePipelineResults'
           token: ${{ inputs.token }}
