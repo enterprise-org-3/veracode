@@ -1,3 +1,12 @@
+default:
+  runs_on: windows-latest
+actions:
+  veracode_static_scan:
+    build:
+      runs_on:  ubuntu-latest
+veracode_sca_scan:
+    build:
+      runs_on:  windows-latest
 veracode_static_scan:
   push:
     trigger: false
