@@ -102,7 +102,7 @@ actions:
   veracode_static_scan:
     build:
       predependency_command: |
-        pipx install pipenv
+        pip3 install --no-cache-dir pipenv --break-system-packages
   veracode_sca_scan:
     build:
       predependency_command: |
