@@ -1,8 +1,13 @@
+default:
+   runs_on: windows-latest
 actions:
-  veracode_sca_scan:
-    build:
-          runs_on: windows-latest
-          predependency_command: "mvn dependency:get -Dartifact=org.apache.commons:commons-lang3:3.14.0"
+   veracode_sca_scan:
+     build:
+       predependency_command: |
+         pipx install pipenv
+         pipenv --version
+         pipenv sync --dev
+         pipenv graph
 veracode_static_scan:
   push:
     trigger: false
