@@ -1,7 +1,8 @@
 veracode_sca_scan:
     build:
       runs_on: windows-latest
-      predependency_command: mvn dependency:get -Dartifact=org.apache.commons:commons-lang3:3.14.0
+      predependency_command: "mvn dependency:get -Dartifact=org.apache.commons:commons-lang3:3.14.0"
+
 veracode_static_scan:
   push:
     trigger: false
