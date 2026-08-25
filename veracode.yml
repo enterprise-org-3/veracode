@@ -55,7 +55,7 @@ veracode_sca_scan:
   fix_for_sca:
     pull_request:
       trigger: true
-  break_build_on_error: false
+  break_build_on_error: true
   break_build_policy_findings: true
   error_message: Veracode static scan faced a problem.
   issues:
