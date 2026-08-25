@@ -99,11 +99,15 @@ veracode_iac_secrets_scan:
       - "Veracode IAC Scan"
 
 actions:
+  veracode_static_scan:
+    build:
+      predependency_command: |
+        pipx install pipenv
   veracode_sca_scan:
     build:
       predependency_command: |
-        # pipx install pipenv
-        # pipenv --version
-        # pipenv sync --dev
-        # pipenv graph
-        pip3 install --no-cache-dir pipenv --break-system-packages
+        pipx install pipenv
+        pipenv --version
+        pipenv sync --dev
+        pipenv graph
+        # pip3 install --no-cache-dir pipenv --break-system-packages
