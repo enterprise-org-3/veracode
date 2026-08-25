@@ -1,12 +1,7 @@
-default:
-  runs_on: windows-latest
-actions:
-  veracode_static_scan:
-    build:
-      runs_on:  ubuntu-latest
 veracode_sca_scan:
-    build:
-      runs_on:  windows-latest
+    build:
+      runs_on: windows-latest
+      predependency_command: mvn dependency:get -Dartifact=org.apache.commons:commons-lang3:3.14.0
 veracode_static_scan:
   push:
     trigger: false
@@ -49,7 +44,7 @@ veracode_static_scan:
 
 veracode_sca_scan:
   push:
-    trigger: false
+    trigger: true
     branches_to_run:
       - '*'
     branches_to_exclude:
@@ -68,7 +63,7 @@ veracode_sca_scan:
   break_build_policy_findings: true
   error_message: Veracode static scan faced a problem.
   issues:
-    trigger: false
+    trigger: true
     commands:
       - Veracode SCA Scan
 
